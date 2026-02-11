@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
+import type { Pokemon } from "@/types/pokedex";
 import { getAllPokemons } from "../services/pokedex";
-
-export type Pokemon = {
-	id: number;
-	name: string;
-	types: string[];
-	image: string | null;
-};
 
 export const usePokemonsList = () => {
 	const [pokemons, setPokemons] = useState<Pokemon[]>([]);
