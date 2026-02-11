@@ -1,3 +1,4 @@
+import { Loader2 } from "lucide-react";
 import { motion } from "motion/react";
 import { usePokemonsList } from "@/hooks/usePokemonsList";
 import noPokemonImage from "../../images/no-pokemon.jpg";
@@ -29,6 +30,7 @@ export const PokemonsList = () => {
 	if (loading) {
 		return (
 			<div className="w-full py-20 text-center">
+				<Loader2 className="w-12 h-12 text-white animate-spin mx-auto mb-4" />
 				<p className="text-white/60 text-lg">Procurando Pokémons! Aguarde...</p>
 			</div>
 		);
