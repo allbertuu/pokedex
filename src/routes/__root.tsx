@@ -2,13 +2,13 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
-import Header from "../components/Header";
-
 export const Route = createRootRoute({
 	component: () => (
 		<>
-			<Header />
-			<Outlet />
+			<div className="bg-[#0A0A0A]">
+				<Outlet />
+			</div>
+
 			<TanStackDevtools
 				config={{
 					position: "bottom-right",
