@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Search } from "lucide-react";
 import { motion } from "motion/react";
-import { PokemonsList } from "@/components/PokemonsList";
+import { PokemonsList } from "@/components/PokemonsList/PokemonsList";
 
 export const Route = createFileRoute("/home")({
 	component: HomePage,

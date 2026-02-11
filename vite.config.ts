@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { fileURLToPath, URL } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
@@ -16,6 +17,12 @@ export default defineConfig({
 		viteReact(),
 		tailwindcss(),
 	],
+	test: {
+		globals: true, // Permite usar describe, it, expect sem importar
+		environment: "jsdom", // Simula o navegador
+		setupFiles: "./src/setupTests.ts", // Arquivo de configuração que criaremos
+		css: true, // Útil se você testa estilos/classes
+	},
 	resolve: {
 		alias: {
 			"@": fileURLToPath(new URL("./src", import.meta.url)),

@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { usePokemonsList } from "@/hooks/usePokemonsList";
-import noPokemonImage from "../images/no-pokemon.jpg";
+import noPokemonImage from "../../images/no-pokemon.jpg";
 
 const POKEMON_TYPE_COLORS: Record<string, string> = {
 	fire: "#F08030",
