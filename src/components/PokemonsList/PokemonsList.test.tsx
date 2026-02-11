@@ -71,13 +71,16 @@ describe("PokemonsList", () => {
 			};
 		});
 
+		const firstPokemon = pokemonsListMock[0];
+		const secondPokemon = pokemonsListMock[1];
+
 		render(<PokemonsList />);
 
-		const pikachu = await screen.findByText(/pikachu/i);
-		const charmander = await screen.findByText(/charmander/i);
+		const firstPokemonElement = await screen.findByText(firstPokemon.name);
+		const secondPokemonElement = await screen.findByText(secondPokemon.name);
 
-		expect(pikachu).toBeInTheDocument();
-		expect(charmander).toBeInTheDocument();
+		expect(firstPokemonElement).toBeInTheDocument();
+		expect(secondPokemonElement).toBeInTheDocument();
 	});
 
 	it.todo(
