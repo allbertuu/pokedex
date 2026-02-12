@@ -5,9 +5,9 @@ import { PokemonsList, prettifyPokemonId } from "./PokemonsList";
 
 // all functions exported there are mocked here
 vi.mock("../../hooks/usePokemonsList");
-// vi.mock("@tanstack/react-router", () => ({
-// 	useNavigate: vi.fn(() => vi.fn()),
-// }));
+vi.mock("@tanstack/react-router", () => ({
+	useNavigate: vi.fn(() => vi.fn()),
+}));
 
 const pokemonsListMock = [
 	{
@@ -26,19 +26,36 @@ const pokemonsListMock = [
 	},
 ];
 
+const usePokemonsListMockWithError = {
+	pokemons: [],
+	loading: false,
+	error: "Sou uma mensagem de erro",
+	filterPokemonsByPokemonName: () => Promise.resolve(),
+};
+
+const usePokemonsListMockWithLoading = {
+	pokemons: [],
+	loading: true,
+	error: null,
+	filterPokemonsByPokemonName: () => Promise.resolve(),
+};
+
+const usePokemonsListMockPopulated = {
+	pokemons: pokemonsListMock,
+	loading: false,
+	error: null,
+	filterPokemonsByPokemonName: () => Promise.resolve(),
+};
+
 describe("PokemonsList", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 	});
 
 	it("should show loading state at first", () => {
-		vi.mocked(usePokemonsList).mockImplementation(() => {
-			return {
-				pokemons: [],
-				loading: true,
-				error: null,
-			};
-		});
+		vi.mocked(usePokemonsList).mockImplementation(
+			() => usePokemonsListMockWithLoading,
+		);
 
 		render(<PokemonsList />);
 
@@ -48,31 +65,23 @@ describe("PokemonsList", () => {
 	});
 
 	it("should show an error message when any errors occurs", () => {
-		const errorMessage = "Sou uma mensagem de erro";
-
-		vi.mocked(usePokemonsList).mockImplementation(() => {
-			return {
-				pokemons: [],
-				loading: false,
-				error: errorMessage,
-			};
-		});
+		vi.mocked(usePokemonsList).mockImplementation(
+			() => usePokemonsListMockWithError,
+		);
 
 		render(<PokemonsList />);
 
-		const errorMessageElement = screen.getByText(errorMessage);
+		const errorMessageElement = screen.getByText(
+			usePokemonsListMockWithError.error,
+		);
 
 		expect(errorMessageElement).toBeInTheDocument();
 	});
 
 	it("should show a list of preloaded pokemons", async () => {
-		vi.mocked(usePokemonsList).mockImplementation(() => {
-			return {
-				pokemons: pokemonsListMock,
-				loading: false,
-				error: null,
-			};
-		});
+		vi.mocked(usePokemonsList).mockImplementation(
+			() => usePokemonsListMockPopulated,
+		);
 
 		render(<PokemonsList />);
 
@@ -84,13 +93,9 @@ describe("PokemonsList", () => {
 	});
 
 	it("should show correct pokemon information", async () => {
-		vi.mocked(usePokemonsList).mockImplementation(() => {
-			return {
-				pokemons: pokemonsListMock,
-				loading: false,
-				error: null,
-			};
-		});
+		vi.mocked(usePokemonsList).mockImplementation(
+			() => usePokemonsListMockPopulated,
+		);
 
 		const firstPokemonMock = pokemonsListMock[0];
 		const secondPokemonMock = pokemonsListMock[1];
@@ -143,13 +148,9 @@ describe("PokemonsList", () => {
 			const user = userEvent.setup(); // setup simulated user
 			const firstPokemon = pokemonsListMock[0];
 			console.log(window.location.href);
-			vi.mocked(usePokemonsList).mockImplementation(() => {
-				return {
-					pokemons: pokemonsListMock,
-					loading: false,
-					error: null,
-				};
-			});
+			vi.mocked(usePokemonsList).mockImplementation(
+				() => usePokemonsListMockPopulated,
+			);
 
 			// const useNavigateMock = vi
 			// 	.mocked(useNavigate)

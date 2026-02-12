@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import { Loader2 } from "lucide-react";
+import { CircleXIcon, FrownIcon, Loader2 } from "lucide-react";
 import { motion } from "motion/react";
 import { usePokemonsList } from "@/hooks/usePokemonsList";
 import noPokemonImage from "../../images/no-pokemon.jpg";
@@ -34,6 +34,14 @@ export function prettifyPokemonId(id: number) {
 
 export const PokemonsList = () => {
 	const { pokemons, error, loading } = usePokemonsList();
+	const navigate = useNavigate();
+
+	function goToPokemonDetailsPage(pokemonName: string) {
+		navigate({
+			to: "/details/$pokemonName",
+			params: { pokemonName },
+		});
+	}
 
 	if (loading) {
 		return (
@@ -47,10 +55,25 @@ export const PokemonsList = () => {
 	if (error) {
 		return (
 			<div className="w-full py-20 text-center">
+				<CircleXIcon className="w-12 h-12 text-red-700/80 mx-auto mb-4" />
 				<p className="text-white/60 text-lg">
-					Houve um erro ao buscar os Pokémons.
+					<strong>Houve um erro ao buscar os Pokémons.</strong>
 					<br /> Mensagem de erro: <strong>{error}</strong>
 				</p>
+				<br />
+				<p className="text-white/60">
+					Opa, sortudo(a)! Você pegou um erro. Que tal{" "}
+					<a
+						href={`https://api.whatsapp.com/send?phone=5575991435586&text=Opa!%20Estava%20no%20Pok%C3%A9dex%20e%20recebi%20esse%20erro%3A%20${URL.parse(error)}`}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="underline hover:text-red-500"
+					>
+						me avisar
+					</a>
+					?
+				</p>
+				<p className="text-white/60">Vai me ajudar muito a corrigi-lo :D</p>
 			</div>
 		);
 	}
@@ -78,6 +101,8 @@ export const PokemonsList = () => {
 						className="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden cursor-pointer group"
 						tabIndex={0} // It performs sequential keyboard navigation with the position defined by the order in the document's source code.
 						data-testid="pokemonCard"
+						onClick={() => goToPokemonDetailsPage(pokemon.name)}
+						onKeyPress={() => goToPokemonDetailsPage(pokemon.name)}
 					>
 						<div className="relative h-48 flex items-center justify-center bg-zinc-800/50 p-6">
 							<div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
@@ -112,9 +137,10 @@ export const PokemonsList = () => {
 				))
 			) : (
 				<div className="col-span-full py-20 flex flex-col items-center justify-center">
-					<div className="text-white/60 text-lg">
-						Nenhum Pokémon com esse termo foi encontrado.
-					</div>
+					<FrownIcon className="w-12 h-12 text-white/80 mx-auto mb-4" />
+					<p className="text-white/60 text-lg">
+						<strong>Nenhum Pokémon</strong> com esse nome foi encontrado.
+					</p>
 				</div>
 			)}
 		</div>

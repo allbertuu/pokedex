@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Search } from "lucide-react";
 import { motion } from "motion/react";
 import { PokemonsList } from "@/components/PokemonsList/PokemonsList";
+import { SearchPokemonByNameOrId } from "@/components/SearchPokemonByNameOrId/SearchPokemonByNameOrId";
 
 export const Route = createFileRoute("/home")({
 	component: HomePage,
@@ -32,16 +32,7 @@ function HomePage() {
 					</h2>
 				</div>
 
-				<div className="relative max-w-md w-full">
-					<Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-					<input
-						type="text"
-						placeholder="Buscar por nome ou ID..."
-						// value={searchTerm}
-						// onChange={(e) => setSearchTerm(e.target.value)}
-						className="w-full h-12 pl-12 pr-4 bg-white/5 border border-white/10 rounded-lg text-lg text-white placeholder-gray-400 focus:outline-none focus:border-red-500 hover:border-red-500 transition-colors"
-					/>
-				</div>
+				<SearchPokemonByNameOrId />
 			</header>
 
 			<PokemonsList />
