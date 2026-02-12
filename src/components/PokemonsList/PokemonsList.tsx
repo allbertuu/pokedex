@@ -68,6 +68,7 @@ export const PokemonsList = () => {
 							delay: idx * 0.05,
 						}}
 						className="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden cursor-pointer group"
+						tabIndex={0} // It performs sequential keyboard navigation with the position defined by the order in the document's source code.
 						// onClick={() => handleSelectPokemon(p)}
 					>
 						<div className="relative h-48 flex items-center justify-center bg-zinc-800/50 p-6">
