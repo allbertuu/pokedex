@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { motion } from "motion/react";
 import { usePokemonsList } from "@/hooks/usePokemonsList";
@@ -23,6 +24,13 @@ const POKEMON_TYPE_COLORS: Record<string, string> = {
 	fairy: "#EE99AC",
 	normal: "#A8A878",
 };
+
+/**
+ * Return id (number) in format "#025"
+ */
+export function prettifyPokemonId(id: number) {
+	return `#${id.toString().padStart(3, "0")}`;
+}
 
 export const PokemonsList = () => {
 	const { pokemons, error, loading } = usePokemonsList();
@@ -69,17 +77,17 @@ export const PokemonsList = () => {
 						}}
 						className="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden cursor-pointer group"
 						tabIndex={0} // It performs sequential keyboard navigation with the position defined by the order in the document's source code.
-						// onClick={() => handleSelectPokemon(p)}
+						data-testid="pokemonCard"
 					>
 						<div className="relative h-48 flex items-center justify-center bg-zinc-800/50 p-6">
 							<div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
 							<img
 								src={pokemon.image || noPokemonImage}
-								alt={pokemon.name}
+								alt={`Front view of the Pokémon ${pokemon.name}`}
 								className="h-full group-hover:scale-110 transition-transform duration-300 drop-shadow-lg"
 							/>
 							<span className="absolute top-2 right-4 text-white/20 font-black text-4xl">
-								#{pokemon.id.toString().padStart(3, "0")}
+								{prettifyPokemonId(pokemon.id)}
 							</span>
 						</div>
 						<div className="p-4">
