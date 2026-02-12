@@ -5,9 +5,7 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 export const Route = createRootRoute({
 	component: () => (
 		<>
-			<div className="bg-[#0A0A0A]">
-				<Outlet />
-			</div>
+			<Outlet />
 
 			<TanStackDevtools
 				config={{
