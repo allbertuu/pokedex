@@ -12,7 +12,7 @@ export async function getAllPokemons() {
 	const pokemons: Pokemon[] = [];
 
 	for (const { name } of results) {
-		const pokemon = await getPokemonByName(name);
+		const pokemon = await api.getPokemonByName(name);
 
 		pokemons.push({
 			id: pokemon.id,
