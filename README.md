@@ -1,301 +1,138 @@
-Welcome to your new TanStack app! 
+# 🚀 Onboarding: Guia de Viagem pela Pokédex
 
-# Getting Started
+> "O lixo de uns é o tesouro de outros."  
+> No desenvolvimento, o que muitos negligenciam (documentação, clareza e facilidade de revisão), eu trato como prioridade. Este projeto não é apenas um consumo de API; é um reflexo de como organizo meu pensamento e facilito a vida de quem trabalha comigo.
 
-To run this application:
+Bem-vindo(a)! Se você é dev, gestor ou até mesmo leigo (e vou me esforçar pra alcançar você), este guia foi feito para que você não perca tempo tentando entender tudo *o que* eu fiz, mas sim para que possamos discutir *por que* tomei cada decisão.
 
-```bash
-npm install
-npm run dev
-```
+## 📌 Sumário
 
-# Building For Production
+* [✨ Funcionalidades](#-funcionalidades)
+* [🧠 Decisões Técnicas](#-decisões-técnicas-lógica-tecnologias-e-paradigmas)
+* [🛠️ Tech Stack](#%EF%B8%8F-tech-stack)
+* [🚀 Próximos Passos (Roadmap)](#-próximos-passos-roadmap)
+* [🏁 Como rodar e revisar o projeto](#-como-rodar-e-revisar-o-projeto)
+* [🍮 Pausa para o Café](#-pausa-para-o-café)
 
-To build this application for production:
+---
 
-```bash
-npm run build
-```
+## ✨ Funcionalidades
 
-## Testing
+Aqui está o resumo das funcionalidades implementadas.
 
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+* **🔍 Busca:** Barra de busca funcional na página principal. Ao pressionar **Enter**, a lista é filtrada dinamicamente, priorizando a intenção do usuário.
+* **📜 Listagem:** Lista de Pokémons pré-carregada para evitar telas vazias no primeiro acesso.
+* **📑 Detalhes (incompleto):** Página dedicada para cada Pokémon, exibindo informações, estatísticas e gráficos.
+* **🛣️ Roteamento Avançado:** Navegação multipáginas utilizando um sistema de rotas baseado em arquivos (`/home` e `/details/$pokemonName`).
+* **♿ Acessibilidade (A11y):** Navegação completa via teclado. Use `Tab` para percorrer e `Enter` para selecionar.
+* **🖼️ Fallback de Imagem:** Tratativa para Pokémons sem foto oficial com a clássica imagem do *"Quem é esse Pokémon?"*.
 
-```bash
-npm run test
-```
+### 🏆 Bonus!
 
-## Styling
+Os seguintes itens extras que garantem a robustez do projeto:
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+* [x] **Error Handling:** Sistema de captura de erros com feedback visual e contato direto com o dev.
+* [x] **Documentation:** Este guia completo de onboarding.
+* [x] **Linting:** Configuração rigorosa com Biome para código limpo.
+* [ ] **Charts (incompleto):** Visualização de stats com Recharts.
+* [x] **Unit Testing:** Lógica central testada com Vitest.
 
+## 🧠 Decisões técnicas (lógica, tecnologias e paradigmas)
 
-## Linting & Formatting
+Minha maior decisão técnica foi separar as responsabilidades da `PokemonsList`. Segui uma arquitetura **inspirada no MVC (Model-View-Controller)** adaptada ao ecossistema React.
 
-This project uses [Biome](https://biomejs.dev/) for linting and formatting. The following scripts are available:
+### 1. A Camada de Serviço (Service Layer)
+Isolei toda a comunicação externa e as regras de negócio em `src/services/pokedex.ts`.
 
+* **Por que?** Desacoplamento total. Se a PokéAPI mudar seu contrato ou se precisarmos trocar a biblioteca de fetch, a interface do usuário permanece intacta.
 
-```bash
-npm run lint
-npm run format
-npm run check
-```
+* **O Ganho**: O código de negócio - as leis que regem o mundo real - não "vaza" para os componentes. Isso facilita a criação de Mocks para testes e centraliza a fonte única da verdade.
 
+### 2. Separação de Preocupações (Smart Hook + Context)
 
+Deleguei o controle de fluxo de dados (loading, erro, filtragem e fetching) para um **Custom Hook integrado ao Context**.
 
-## Routing
-This project uses [TanStack Router](https://tanstack.com/router). The initial setup is a file based router. Which means that the routes are managed as files in `src/routes`.
+* **O Ganho:** A `PokemonsList` foca 100% na "View". Ela não sabe como os dados chegam; ela apenas os renderiza da melhor forma visual. Isso reduz a carga cognitiva e torna o código altamente testável.
 
-### Adding A Route
+### 3. UX na busca por Pokémon
 
-To add a new route to your application just add another a new file in the `./src/routes` directory.
+* **Tratativa de 404:** Em vez de exibir um erro sistêmico, trato o "Not Found" como um estado da interface, informando amigavelmente que nenhum Pokémon foi encontrado.
+* **Feedback Proativo:** Implementei uma forma de contato direto comigo que envia o erro automaticamente.
 
-TanStack will automatically generate the content of the route file for you.
+## 🛠️ Tech Stack
 
-Now that you have two routes you can use a `Link` component to navigate between them.
+> **Disclaimer:** Toda decisão técnica serve apenas para este snapshot do projeto. Não tenho remorso em mudar de ideia caso os requisitos mudem. A melhor decisão é a que resolve o problema do negócio com a ferramenta certa.
 
-### Adding Links
+| Tecnologia | Por que usei? |
+| --- | --- |
+| **Vite** | Aplicação simples, poucas rotas e sem necessidade de SEO pesado. Custo de deploy menor (Static) sem precisar de servidor Node.js para SSR. |
+| **TanStack Router** | Roteamento robusto com **Type Safety** absoluto e excelente suporte para *search params* (rota `/details`). |
+| **TailwindCSS** | Optei por não usar libs de componentes (como AntDesign) para manter o bundle leve e ter controle total do design (algo que valorizo muito) sem "sobrescrever" estilos pesados. Cuidei para que a interface tivessse boa acessibilidade, ainda que dessa forma mais "crua". |
+| **Biome** | Toolchain *all-in-one* para lint e format. Mais rápido que Prettier e com quase zero configuração. |
+| **Vitest** | Rapidez e ótima DX para garantir que o "coração" da lógica esteja seguro, com bons testes automatizados. |
+| **pokenode-ts** | Recomendação oficial da PokéAPI. Tipagem *built-in* que facilita a integração e paginação, além de função de cache configurado com Axios. |
 
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
+#### 💡 Destaque Técnico: Arquivos `.d.ts`
 
-```tsx
-import { Link } from "@tanstack/react-router";
-```
+Utilizei arquivos de definição de tipos específicos para não "sujar" o código de produção com tipos que não geram código executável, mantendo a compilação limpa e eficiente. Além de um contrato único do formato dos dados para toda a aplicação se basear.
 
-Then anywhere in your JSX you can use it like so:
+## 🚀 Próximos Passos (Roadmap)
 
-```tsx
-<Link to="/about">About</Link>
-```
+Se eu tivesse mais tempo (ou para uma V2), meu foco seria:
 
-This will create a link that will navigate to the `/about` route.
+* **GraphQL:** Implementar para evitar *over-fetching* na home, buscando e organizando apenas os dados estritamente necessários para a listagem inicial.
+* **Paginação:** Dessa forma a página inicial pode mostrar mais Pokémons e o usuário navegar na vasta coleção que existe. O módulo `pokenode-ts` facilita esse processo ainda mais.
+* **Busca por termo incompleto (fuzzy search):** Eu percebi que a PokéAPI não permite pesquisar dessa forma nativamente, como um _fuzzy search_. A aplicação hoje busca por termos exatos, mas seria muito legal implementar isso de alguma forma no futuro. As soluções que pensei eram desnecessariamente complexas...
 
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
+## 🏁 Como rodar e revisar o projeto:
 
-### Using A Layout
+1. Clone o repositório:
 
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you use the `<Outlet />` component.
+   ```bash
+   git clone https://github.com/allbertuu/pokedex.git
+   ```
 
-Here is an example layout that includes a header:
+2. Acesse o diretório do projeto:
 
-```tsx
-import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+   ```bash
+   cd pokedex
+   ```
 
-import { Link } from "@tanstack/react-router";
+3. Instale as dependências:
 
-export const Route = createRootRoute({
-  component: () => (
-    <>
-      <header>
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-        </nav>
-      </header>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
-  ),
-})
-```
+   ```bash
+   npm install
+   ```
 
-The `<TanStackRouterDevtools />` component is not required so you can remove it if you don't want it in your layout.
+4. Inicie o servidor de desenvolvimento:
 
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
+   ```bash
+   npm run dev
+   ```
 
+5. Abra o navegador e acesse:
 
-## Data Fetching
+   ```bash
+   http://localhost:3000
+   ```
 
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
+## 🧪 Testes
 
-For example:
-
-```tsx
-const peopleRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/people",
-  loader: async () => {
-    const response = await fetch("https://swapi.dev/api/people");
-    return response.json() as Promise<{
-      results: {
-        name: string;
-      }[];
-    }>;
-  },
-  component: () => {
-    const data = peopleRoute.useLoaderData();
-    return (
-      <ul>
-        {data.results.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    );
-  },
-});
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-### React-Query
-
-React-Query is an excellent addition or alternative to route loading and integrating it into you application is a breeze.
-
-First add your dependencies:
+Para executar os testes, utilize o comando:
 
 ```bash
-npm install @tanstack/react-query @tanstack/react-query-devtools
+npm test
 ```
 
-Next we'll need to create a query client and provider. We recommend putting those in `main.tsx`.
+**Recomendação de Revisão:** Comece pelo arquivo `src/services/pokedex.ts` (a base), passe pelo `src/contexts/PokemonContext.tsx` (a orquestração) e termine nos componentes da pasta `pages/`.
 
-```tsx
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+---
 
-// ...
+## 🍮 Pausa para o Café
 
-const queryClient = new QueryClient();
+Se este projeto fosse um doce, seria um **pudim**: clássico, mas que exige a técnica certa para não ficar cheio de furinhos (bugs). Sou um desenvolvedor apaixonado por cultura japonesa, corredor amador e alguém que acredita que código limpo é, acima de tudo, um gesto de respeito aos meus colegas de equipe.
 
-// ...
+---
 
-if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement);
-
-  root.render(
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  );
-}
-```
-
-You can also add TanStack Query Devtools to the root route (optional).
-
-```tsx
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
-const rootRoute = createRootRoute({
-  component: () => (
-    <>
-      <Outlet />
-      <ReactQueryDevtools buttonPosition="top-right" />
-      <TanStackRouterDevtools />
-    </>
-  ),
-});
-```
-
-Now you can use `useQuery` to fetch your data.
-
-```tsx
-import { useQuery } from "@tanstack/react-query";
-
-import "./App.css";
-
-function App() {
-  const { data } = useQuery({
-    queryKey: ["people"],
-    queryFn: () =>
-      fetch("https://swapi.dev/api/people")
-        .then((res) => res.json())
-        .then((data) => data.results as { name: string }[]),
-    initialData: [],
-  });
-
-  return (
-    <div>
-      <ul>
-        {data.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-export default App;
-```
-
-You can find out everything you need to know on how to use React-Query in the [React-Query documentation](https://tanstack.com/query/latest/docs/framework/react/overview).
-
-## State Management
-
-Another common requirement for React applications is state management. There are many options for state management in React. TanStack Store provides a great starting point for your project.
-
-First you need to add TanStack Store as a dependency:
-
-```bash
-npm install @tanstack/store
-```
-
-Now let's create a simple counter in the `src/App.tsx` file as a demonstration.
-
-```tsx
-import { useStore } from "@tanstack/react-store";
-import { Store } from "@tanstack/store";
-import "./App.css";
-
-const countStore = new Store(0);
-
-function App() {
-  const count = useStore(countStore);
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-    </div>
-  );
-}
-
-export default App;
-```
-
-One of the many nice features of TanStack Store is the ability to derive state from other state. That derived state will update when the base state updates.
-
-Let's check this out by doubling the count using derived state.
-
-```tsx
-import { useStore } from "@tanstack/react-store";
-import { Store, Derived } from "@tanstack/store";
-import "./App.css";
-
-const countStore = new Store(0);
-
-const doubledStore = new Derived({
-  fn: () => countStore.state * 2,
-  deps: [countStore],
-});
-doubledStore.mount();
-
-function App() {
-  const count = useStore(countStore);
-  const doubledCount = useStore(doubledStore);
-
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-      <div>Doubled - {doubledCount}</div>
-    </div>
-  );
-}
-
-export default App;
-```
-
-We use the `Derived` class to create a new store that is derived from another store. The `Derived` class has a `mount` method that will start the derived store updating.
-
-Once we've created the derived store we can use it in the `App` component just like we would any other store using the `useStore` hook.
-
-You can find out everything you need to know on how to use TanStack Store in the [TanStack Store documentation](https://tanstack.com/store/latest).
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
+Fim.  
+_Esse quam videri_
