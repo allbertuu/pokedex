@@ -26,6 +26,7 @@ Aqui está o resumo das funcionalidades implementadas.
 * **🛣️ Roteamento Avançado:** Navegação multipáginas utilizando um sistema de rotas baseado em arquivos (`/home` e `/details/$pokemonName`).
 * **♿ Acessibilidade (A11y):** Navegação completa via teclado. Use `Tab` para percorrer e `Enter` para selecionar.
 * **🖼️ Fallback de Imagem:** Tratativa para Pokémons sem foto oficial com a clássica imagem do *"Quem é esse Pokémon?"*.
+<img width="263" height="324" alt="image" src="https://github.com/user-attachments/assets/09ff6571-5fcc-4d5b-9c82-078c0ad1475c" />
 
 ### 🏆 Bonus!
 
@@ -40,6 +41,8 @@ Os seguintes itens extras que garantem a robustez do projeto:
 ## 🧠 Decisões técnicas (lógica, tecnologias e paradigmas)
 
 Minha maior decisão técnica foi separar as responsabilidades da `PokemonsList`. Segui uma arquitetura **inspirada no MVC (Model-View-Controller)** adaptada ao ecossistema React.
+
+<img width="614" height="127" alt="image" src="https://github.com/user-attachments/assets/960d177f-fa00-46f6-bc90-00e6e18e1f8e" />
 
 ### 1. A Camada de Serviço (Service Layer)
 Isolei toda a comunicação externa e as regras de negócio em `src/services/pokedex.ts`.
@@ -58,6 +61,8 @@ Deleguei o controle de fluxo de dados (loading, erro, filtragem e fetching) para
 
 * **Tratativa de 404:** Em vez de exibir um erro sistêmico, trato o "Not Found" como um estado da interface, informando amigavelmente que nenhum Pokémon foi encontrado.
 * **Feedback Proativo:** Implementei uma forma de contato direto comigo que envia o erro automaticamente.
+<img width="519" alt="image" src="https://github.com/user-attachments/assets/596c1d1c-a4dd-4aa3-8390-b2c1a9ef4e6a" />
+
 
 ## 🛠️ Tech Stack
 
